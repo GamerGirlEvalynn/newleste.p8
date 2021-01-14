@@ -652,7 +652,7 @@ dream_block={
   update=function(this)
     --[[this.hitbox.w+=2
     this.hitbox.h+=2]]
-    local hit=this.check(player,0,0)
+    local hit=this.player_here()
     if hit then 
       hit.dash_effect_time=10
       hit.dash_time=2
@@ -669,11 +669,11 @@ dream_block={
         hit.spd=vector(hit.dash_target_x*(hit.dash_target_y==0 and 2.5  or 1.7678),hit.dash_target_y*(hit.dash_target_x==0 and 2.5 or 1.7678))
       end
       if abs(hit.spd.x)<abs(hit.dash_target_x) or abs(hit.spd.y)<abs(hit.dash_target_y) then 
-        this.kill_timer+=1
+        hit.move(hit.dash_target_x,hit.dash_target_y,0)
+        if hit.is_solid(hit.dash_target_x,hit.dash_target_y) then 
+          kill_player(hit)
+        end 
       end
-      if this.kill_timer>=2 then 
-        kill_player(hit)
-      end 
       hit.dreaming=true 
       hit.djump=max_djump
     end 
