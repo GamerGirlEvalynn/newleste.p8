@@ -648,6 +648,15 @@ dream_block={
       this.hitbox.h+=8
     end 
     this.kill_timer=0
+    this.particles={}
+    for i=1,this.hitbox.w*this.hitbox.h/32 do 
+      add(this.particles,
+      {x=rnd(this.hitbox.w-1)+this.x,
+      y=rnd(this.hitbox.h-1)+this.y,
+      spdx=rnd(2)-1,
+      spdy=rnd(2)-1,
+      c=rnd(6)+6})
+    end
   end,
   update=function(this)
     --[[this.hitbox.w+=2
@@ -683,6 +692,27 @@ dream_block={
   draw=function(this)
     rectfill(this.x,this.y,this.right(),this.bottom(),0)
     rect(this.x,this.y,this.right(),this.bottom(),7)
+    foreach(this.particles, function(p)
+        p.x+=p.spdx
+        p.y+=p.spdy
+        if p.x>=this.right()  then 
+          p.x=this.left()+1
+          p.y=this.y+rnd(this.hitbox.h)
+        elseif p.x<=this.left()+1  then 
+          p.x=this.right()-1
+          p.y=this.y+rnd(this.hitbox.h)
+        end  
+        if p.y>=this.bottom()  then 
+          p.y=this.top()+1
+          p.x=this.x+rnd(this.hitbox.w)
+        elseif p.y<=this.top()+1  then 
+          p.y=this.bottom()-1
+          p.x=this.x+rnd(this.hitbox.w)
+        end
+        p.spdx=clamp(p.spdx+rnd(0.2)-0.1,-1,1)
+        p.spdy=clamp(p.spdy+rnd(0.2)-0.1,-1,1)
+        rectfill(p.x,p.y,p.x,p.y,p.c)
+      end)
   end 
 }
 
