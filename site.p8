@@ -649,10 +649,10 @@ dream_block={
     end 
   end,
   update=function(this)
-    this.hitbox.w+=2
-    this.hitbox.h+=2
-    local hit=this.check(player,-1,-1)
-    if hit and hit.dash_effect_time>2 then 
+    --[[this.hitbox.w+=2
+    this.hitbox.h+=2]]
+    local hit=this.check(player,0,0)
+    if hit then 
       hit.dash_effect_time=10
       hit.dash_time=2
       if hit.dash_target_y==-1.5 then 
@@ -665,13 +665,13 @@ dream_block={
         hit.dash_target_x=sign(hit.dash_target_x)*2.5
       end 
       if not hit.dreaming then 
-        hit.spd=vector(hit.dash_target_x*2,hit.dash_target_y*2)
+        hit.spd=vector(hit.dash_target_x*(hit.dash_target_y==0 and 2.5  or 1.7678),hit.dash_target_y*(hit.dash_target_x==0 and 2.5 or 1.7678))
       end
       hit.dreaming=true 
       hit.djump=max_djump
     end 
-    this.hitbox.w-=2
-    this.hitbox.h-=2
+    --[[this.hitbox.w-=2
+    this.hitbox.h-=2]]--
   end,
   draw=function(this)
     rectfill(this.x,this.y,this.right(),this.bottom(),0)
@@ -727,7 +727,9 @@ function init_object(type,x,y,tile)
            obj.is_flag(ox,oy,0) or 
            obj.check(fall_floor,ox,oy) or
            -- <dream_block> --
-           obj.check(dream_block,ox,oy) and not obj.dreaming
+           obj.check(dream_block,ox,oy) and (obj.dash_effect_time<=2 or  
+           not obj.check(dream_block,sign(obj.dash_target_x),sign(obj.dash_target_y)) 
+           and not obj.dreaming)
            -- </dream_block> --
   end
   
