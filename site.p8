@@ -714,33 +714,22 @@ dream_block={
         rectfill(px+dx*d*ds,py+dy*d*ds,px+dx*d*ds,py+dy*d*ds,p.c)
       end
     end)
+    color(7)
     if #this.disp_shapes==0 then
       --rect(this.x,this.y,this.right(),this.bottom(),7)
-        color(7)
-        line(this.x+1, this.y, this.right()-1,this.y)        
-        line(this.x+1, this.bottom(), this.right()-1,this.bottom())        
-        line(this.x, this.y+1, this.x,this.bottom()-1)        
-        line(this.right(), this.y+1, this.right(),this.bottom()-1)              
+      for i=this.y,this.bottom(),this.hitbox.h-1 do 
+        line(this.x+1, i, this.right()-1,i)        
+      end      
+      for i=this.x,this.right(),this.hitbox.w-1 do 
+        line(i, this.y+1, i,this.bottom()-1)      
+      end         
     else
-      for x=this.x, this.right() do
-        local y=this.y
-        local d,dx,dy,ds=displace(this.disp_shapes, vector(x,y))
-        d=max((4-d), 0)
-        rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds,7)
-        y=this.bottom()
-        d,dx,dy,ds=displace(this.disp_shapes, vector(x,y))
-        d=max((4-d), 0)
-        rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds,7)
-      end
-      for y = this.y+1, this.bottom()-1 do
-        local x=this.x
-        local d,dx,dy,ds=displace(this.disp_shapes, vector(x,y))
-        d=max((4-d), 0)
-        rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds,7)
-        x=this.right()
-        d,dx,dy,ds=displace(this.disp_shapes, vector(x,y))
-        d=max((4-d), 0)
-        rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds,7)
+      for x=this.x,this.right() do
+        for y=this.y,this.bottom(),(x==this.x or x==this.right()) and 1 or this.bottom()-this.y do
+          local d,dx,dy,ds=displace(this.disp_shapes,vector(x,y))
+          d=max((4-d), 0)
+          rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds)
+        end
       end
     end
     --[[pset(this.x, this.y, 0)
