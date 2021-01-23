@@ -640,7 +640,7 @@ lifeup={
   end
 }
 
-star_colors={3, 8, 9, 10, 12, 14}
+
 dream_block={
   init=function(this)
     while this.right()<lvl_pw-1 and tile_at(this.right()/8+1,this.y/8)==65 do 
@@ -656,7 +656,7 @@ dream_block={
       {x=rnd(this.hitbox.w-1)+this.x,
       y=rnd(this.hitbox.h-1)+this.y,
       z=rnd(1),
-      c=star_colors[flr(rnd(7))]})
+      c=split"3, 8, 9, 10, 12, 14"[flr(rnd(7))]})
     end
     this.dtimer=1
     this.disp_shapes={}
@@ -1183,12 +1183,12 @@ end
 
 --<dream_block>
 
-function vec_len(a)
-  return sqrt(a.x^2 + a.y^2)
-end
-
 function vec_len_sqr(a)
   return a.x^2 + a.y^2
+end
+
+function vec_len(a)
+  return sqrt(vec_len_sqr(a))
 end
 
 function vec_sub(a,b)
