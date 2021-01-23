@@ -703,9 +703,9 @@ dream_block={
     update_disp_shapes(this.disp_shapes)
   end,
   draw=function(this)
-    rectfill(this.x,this.y,this.right(),this.bottom(),0)
+    rectfill(this.x+1,this.y+1,this.right()-1,this.bottom()-1,0)
     foreach(this.particles, function(p)
-      local px,py = ((p.x+(cam_x*p.z)-64)%this.hitbox.w)+this.x, ((p.y+(cam_y*p.z)-64)%this.hitbox.h)+this.y
+      local px,py = (p.x+cam_x*p.z-65)%(this.hitbox.w-2)+1+this.x, (p.y+cam_y*p.z-65)%(this.hitbox.h-2)+1+this.y
       if #this.disp_shapes==0 then
         rectfill(px,py,px,py,p.c)
       else
@@ -715,7 +715,12 @@ dream_block={
       end
     end)
     if #this.disp_shapes==0 then
-      rect(this.x,this.y,this.right(),this.bottom(),7)
+      --rect(this.x,this.y,this.right(),this.bottom(),7)
+        color(7)
+        line(this.x+1, this.y, this.right()-1,this.y)        
+        line(this.x+1, this.bottom(), this.right()-1,this.bottom())        
+        line(this.x, this.y+1, this.x,this.bottom()-1)        
+        line(this.right(), this.y+1, this.right(),this.bottom()-1)              
     else
       for x=this.x, this.right() do
         local y=this.y
@@ -738,10 +743,10 @@ dream_block={
         rectfill(x+dx*d*ds,y+dy*d*ds,x+dx*d*ds,y+dy*d*ds,7)
       end
     end
-    pset(this.x, this.y, 0)
+    --[[pset(this.x, this.y, 0)
     pset(this.x, this.bottom(), 0)
     pset(this.right(), this.y, 0)
-    pset(this.right(), this.bottom(), 0)
+    pset(this.right(), this.bottom(), 0)]]--
   end 
 }
 
